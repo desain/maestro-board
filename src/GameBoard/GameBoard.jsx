@@ -8,7 +8,7 @@ import i18n from '../i18n';
 
 const VERSION = '1.3.0'; // Keep in sync with version in package.json
 
-class GameBoard extends Component {
+export default class GameBoard extends Component {
   // Set up state for gameboard
   constructor(props) {
     super(props);
@@ -55,9 +55,10 @@ class GameBoard extends Component {
       showControls: false,
       gameRunning: false,
       helpActive: true,
-      lang: currentLang,
+      language: currentLang,
       rounds: 4,
-      justMoved: false
+      justMoved: false,
+      theme: 'default',
     });
   }
 
@@ -192,7 +193,6 @@ class GameBoard extends Component {
         if (player.score > maxPoints) {
           addRound = 1;
         }
-
       }
       return player;
     });
@@ -218,9 +218,13 @@ class GameBoard extends Component {
     this.setState({players});
   }
 
-  changeLangHandler = (e) => {
-    i18n.changeLanguage(e.target.value);
-    this.setState({lang: e.target.value});
+  setLanguage = (language) => {
+    i18n.changeLanguage(language);
+    this.setState({language: language});
+  }
+
+  setTheme = (theme) => {
+    this.setState({theme});
   }
 
   render() {
@@ -264,17 +268,21 @@ class GameBoard extends Component {
                 {players}
               </div>
               {!this.state.gameRunning ?
-                  <Setup players={this.state.players} namePlayer={this.namePlayer} addPlayer={this.addPlayer} removePlayer={this.removePlayer}
-                         startGame={this.startGame} resetGame={this.resetGame} changeLang={this.changeLangHandler} lang={this.state.lang}/>
-                  : null}
-              {this.state.helpActive ?
-                  <Help version={VERSION}/>
-                  : null}
+                  <Setup players={this.state.players}
+                         namePlayer={this.namePlayer}
+                         addPlayer={this.addPlayer}
+                         removePlayer={this.removePlayer}
+                         startGame={this.startGame}
+                         resetGame={this.resetGame}
+                         language={this.state.language}
+                         setLanguage={this.setLanguage}
+                         theme={this.state.theme}
+                         setTheme={this.setTheme}
+                  /> : null}
+              {this.state.helpActive ? <Help version={VERSION}/> : null}
             </Col>
           </Row>
         </div>
     )
   }
 }
-
-export default GameBoard;

@@ -7,6 +7,7 @@ import {Col, Row} from 'react-bootstrap';
 import './Setup.css';
 import LanguagePicker from '../LanguagePicker/LanguagePicker'
 import {useTranslation} from 'react-i18next';
+import ThemePicker from "../ThemePicker/ThemePicker";
 
 const resetGameDialog = (resetGameFunction, confirmationText) => {
   let answer = window.confirm(confirmationText);
@@ -56,7 +57,8 @@ const Setup = (props) => {
   ))
   return (
       <div className="setup-panel">
-        <LanguagePicker currentLang={props.lang} change={props.changeLang}/>
+        <LanguagePicker language={props.lang} setLanguage={props.setLanguage}/>
+        <ThemePicker theme={props.theme} setTheme={props.setTheme} />
         <h3>{t("Player Setup")}</h3>
         <div className="player-entry">
           <div className="setup-buttons">
