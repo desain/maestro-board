@@ -11,6 +11,8 @@
   min-height: 500px;
   font-size: 24px;
   color: #e0e0e0;
+  --maestro-primary-color: #ffcc00;
+  --maestro-minor-color: #cccccc;
 }
 
 .game-board > .row {
@@ -34,7 +36,7 @@
 }
 
 .maestro-title {
-  color: #ffcc00;
+  color: var(--maestro-primary-color, hotpink);
   font-family: "Luckiest Guy", sans-serif;
   letter-spacing: 3px;
   font-size: 72px;
@@ -42,27 +44,6 @@
 
   writing-mode: vertical-lr;
   transform: rotate(180deg);
-}
-
-.control-center {
-  font-size: 18px;
-  text-align: center;
-}
-
-.control-center .instructions {
-  font-size: .6em;
-  color: #ffcc00;
-}
-
-.control-center button {
-  margin-bottom: 10px;
-}
-
-
-.control-center h3 {
-  text-transform: uppercase;
-  font-size: 16px;
-  color: #999999;
 }
 
 .add-player-button {
@@ -78,7 +59,7 @@
 
 .number-markers {
   font-size: .5em;
-  color: #ffcc00;
+  color: var(--maestro-primary-color, hotpink);
   margin-left: 189px;
   margin-right: -15px;
   display: flex;

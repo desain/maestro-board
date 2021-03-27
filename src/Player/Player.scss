@@ -9,12 +9,12 @@ $one-point: calc(100% / 25);
 
 @mixin flooble($rounds: 5) {
   $stripes: ();
-  $color: Red;
+  $color: hotpink;
   @for $i from 1 through 5 {
     @if $i == 5 {
-      $color: #ffcc00;
+      $color: var(--maestro-primary-color, hotpink);
     } @else {
-      $color: #cccccc;
+      $color: var(--maestro-minor-color, hotpink);
     }
     $test3: calc(#{$i} * (100% / (5 * #{$rounds})) - 2px);
     $test4: calc(#{$i} * (100% / (5 * #{$rounds})));

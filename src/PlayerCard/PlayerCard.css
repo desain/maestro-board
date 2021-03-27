@@ -16,9 +16,7 @@
 }
 
 .player-card.selected {
-  /* border: 2px solid #ff0000; */
   background-image: linear-gradient(#ffffcc, #ffcc00);
-
 }
 
 .eliminated {

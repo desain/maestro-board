@@ -20,7 +20,16 @@ export const BUILTIN_THEMES = Object.freeze({
   nice: {
     name: 'Nicestro theme',
     title: 'Nicestro :)',
-    css: '',
+    css: `
+      .game-board {
+        background-color: skyblue;
+        --maestro-primary-color: #bbf0ff;
+        --maestro-minor-color: white;
+      }
+      .maestro-title {
+          text-shadow: white -4px 4px;
+      }
+    `,
   },
 });
 export const CUSTOM_THEME_NAME = 'custom';
