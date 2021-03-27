@@ -27,16 +27,19 @@
   padding: 0;
 }
 
-h1.maestro-title {
+.title-container {
+ display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.maestro-title {
   color: #ffcc00;
   font-family: "Luckiest Guy", sans-serif;
   letter-spacing: 3px;
-
-  transform: rotate(-90deg) translateX(-300px);
-  transform-origin: center;
   font-size: 72px;
   text-shadow: black -4px 4px;
-  cursor: pointer;
+  transform: rotate(-90deg);
 }
 
 .control-center {
@@ -58,10 +61,6 @@ h1.maestro-title {
   text-transform: uppercase;
   font-size: 16px;
   color: #999999;
-}
-
-div.title {
-  height: 400px;
 }
 
 .add-player-button {

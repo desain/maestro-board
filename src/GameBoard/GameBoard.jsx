@@ -280,38 +280,34 @@ export default class GameBoard extends Component {
     const title = this.getTheme().title;
 
     return (
-        <div className={'game-board rounds-' + this.state.rounds}>
-          <Row>
-            <Col xs={1}>
-              <div className="title">
-                <h1 className="maestro-title">{title}</h1>
+        <Row className={'game-board rounds-' + this.state.rounds}>
+          <Col xs={1} className="title-container">
+            <h1 className="maestro-title">{title}</h1>
+          </Col>
+          <Col xs={11}>
+            <div>
+              <div className="number-markers">
+                {numberMarkers()}
               </div>
-            </Col>
-            <Col xs={11}>
-              <div>
-                <div className="number-markers">
-                  {numberMarkers()}
-                </div>
-                {players}
-              </div>
-              {!this.state.gameRunning ?
-                  <Setup players={this.state.players}
-                         namePlayer={this.namePlayer}
-                         addPlayer={this.addPlayer}
-                         removePlayer={this.removePlayer}
-                         startGame={this.startGame}
-                         resetGame={this.resetGame}
-                         language={this.state.language}
-                         setLanguage={this.setLanguage}
-                         theme={this.state.theme}
-                         setTheme={this.setTheme}
-                         customTheme={this.state.customTheme}
-                         setCustomTheme={this.setCustomTheme}
-                  /> : null}
-              {this.state.helpActive ? <Help version={VERSION}/> : null}
-            </Col>
-          </Row>
-        </div>
+              {players}
+            </div>
+            {!this.state.gameRunning ?
+                <Setup players={this.state.players}
+                       namePlayer={this.namePlayer}
+                       addPlayer={this.addPlayer}
+                       removePlayer={this.removePlayer}
+                       startGame={this.startGame}
+                       resetGame={this.resetGame}
+                       language={this.state.language}
+                       setLanguage={this.setLanguage}
+                       theme={this.state.theme}
+                       setTheme={this.setTheme}
+                       customTheme={this.state.customTheme}
+                       setCustomTheme={this.setCustomTheme}
+                /> : null}
+            {this.state.helpActive ? <Help version={VERSION}/> : null}
+          </Col>
+        </Row>
     )
   }
 }
