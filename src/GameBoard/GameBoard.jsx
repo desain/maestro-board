@@ -229,7 +229,10 @@ class GameBoard extends Component {
 
   eliminateChecked = () => {
     const players = this.state.players.map((player, i) => {
-      if (player.isChecked) player.isEliminated += true;
+      if (player.isChecked) {
+        player.isEliminated = true;
+        player.score = 0;
+      }
       return player;
     })
     this.setState({players});
