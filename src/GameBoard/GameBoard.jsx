@@ -6,7 +6,7 @@ import Setup from '../Setup/Setup';
 import Help from '../Help/Help';
 import i18n from '../i18n';
 
-const VERSION = '1.2.1';
+const VERSION = '1.3.0'; // Keep in sync with version in package.json
 
 class GameBoard extends Component {
   // Set up state for gameboard
