@@ -12,18 +12,17 @@ const playerCard = (props) => {
   const style = {
     marginLeft: 'calc((100%/' + totalPoints + '*' + score + ') - 200px)'
   }
-  return(
-    <div className={cardCSS} style={style} onClick={(e) => checkPlayer(e, number)}>
-      <div className="player-number">
-        {number}
-      </div>
-      <div className="player-name"  title={score}>
-        <ScaleText maxFontSize={24}>
-
-            {name}
-            </ScaleText>
+  return (
+      <div className={cardCSS} style={style} onClick={(e) => checkPlayer(e, number)}>
+        <div className="player-number">
+          {number}
         </div>
-    </div>
+        <div className="player-name" title={score}>
+          <ScaleText maxFontSize={24}>
+            {name}
+          </ScaleText>
+        </div>
+      </div>
   )
 }
 

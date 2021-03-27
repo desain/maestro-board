@@ -8,12 +8,12 @@ import GameBoard from './GameBoard/GameBoard';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <I18nextProvider i18n={ i18next }>
-      <GameBoard />
-    </I18nextProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+      <I18nextProvider i18n={i18next}>
+        <GameBoard/>
+      </I18nextProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

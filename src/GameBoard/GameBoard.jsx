@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Player from '../Player/Player';
-import {Row, Col} from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 import './GameBoard.css';
 import Setup from '../Setup/Setup';
 import Help from '../Help/Help';
@@ -36,13 +36,19 @@ class GameBoard extends Component {
 
 
     // Get current session info, in case of reload
-    if (sessionStorage.length > 0 ) {
+    if (sessionStorage.length > 0) {
       let persistentState = sessionStorage.getItem('maestroState');
       if (persistentState !== 'null') {
         let item = JSON.parse(persistentState);
         this.state = item;
       }
     }
+  }
+
+  static getDerivedStateFromProps = (props, state) => {
+    let persistentState = JSON.stringify(state);
+    sessionStorage.setItem('maestroState', persistentState)
+    return state;
   }
 
   componentDidMount = () => {
@@ -57,7 +63,7 @@ class GameBoard extends Component {
   initialSetup = () => {
     const currentLang = i18n.language;
     const players = [];
-    for ( let i = 1; i < 13; i++) {
+    for (let i = 1; i < 13; i++) {
       players.push({
         name: '',
         number: i,
@@ -66,7 +72,7 @@ class GameBoard extends Component {
         isChecked: false
       })
     }
-    return({
+    return ({
       players,
       showControls: false,
       gameRunning: false,
@@ -80,7 +86,7 @@ class GameBoard extends Component {
   keyPressHandler = (event) => {
     let currentRounds = this.state.rounds;
     let key = event.key
-    switch(key) {
+    switch (key) {
       case "?":
         // ? pressed -- help system
         this.setState({helpActive: !this.state.helpActive})
@@ -99,11 +105,11 @@ class GameBoard extends Component {
         break;
       case "ArrowUp":
         // UP arrow key - add rounds to the board
-        this.setState({rounds: currentRounds+1});
+        this.setState({rounds: currentRounds + 1});
         break;
       case "ArrowDown":
         // DOWN arrow key - add rounds to the board
-        if (currentRounds > 4) this.setState({rounds: currentRounds-1});
+        if (currentRounds > 4) this.setState({rounds: currentRounds - 1});
         break;
       case "1":
       case "2":
@@ -111,7 +117,7 @@ class GameBoard extends Component {
       case "4":
       case "5":
         // Number key pressed -- add proper number of points and then uncheck everyone
-        this.addToChecked(parseInt(key,10));
+        this.addToChecked(parseInt(key, 10));
         this.uncheckAll();
         break;
       case 'e':
@@ -140,19 +146,13 @@ class GameBoard extends Component {
 
   // Return the lowest score on the board
   getLowestScore = () => {
-    return [...this.state.players].sort((a,b) => (a.score > b.score) ? 1 : -1)[0].score;
-  }
-
-  static getDerivedStateFromProps = (props,state) => {
-    let persistentState = JSON.stringify(state);
-    sessionStorage.setItem('maestroState', persistentState)
-    return state;
+    return [...this.state.players].sort((a, b) => (a.score > b.score) ? 1 : -1)[0].score;
   }
 
   startGame = () => {
-    this.setState({ gameRunning: true, helpActive: false });
+    this.setState({gameRunning: true, helpActive: false});
   }
-  
+
   resetGame = () => {
     this.setState(this.initialSetup());
   }
@@ -168,20 +168,20 @@ class GameBoard extends Component {
       isChecked: false
     }
     newPlayerArray.push(newPlayer);
-    this.setState({ players: newPlayerArray });
+    this.setState({players: newPlayerArray});
   }
 
   removePlayer = () => {
     if (this.state.players.length > 1) {
       let newPlayerArray = [].concat(this.state.players);
-      newPlayerArray.splice(-1,1);
+      newPlayerArray.splice(-1, 1);
       this.setState({players: newPlayerArray})
     }
   }
 
   namePlayer = (e, playerNum) => {
     const newName = e.target.value;
-    const players = this.state.players.map( (player, i) => {
+    const players = this.state.players.map((player, i) => {
       if (playerNum === player.number) player.name = newName;
       return player;
     })
@@ -189,17 +189,17 @@ class GameBoard extends Component {
 
   }
 
-   selectPlayer = (e, playerNum) => {
-     // First, did we just move another bunch of players? If so, uncheck all
-     if (this.state.justMoved) {
-       this.uncheckAll();
-     }
-    const players = this.state.players.map( (player, i) => {
+  selectPlayer = (e, playerNum) => {
+    // First, did we just move another bunch of players? If so, uncheck all
+    if (this.state.justMoved) {
+      this.uncheckAll();
+    }
+    const players = this.state.players.map((player, i) => {
       if (playerNum === player.number) {
         player.isChecked = !player.isChecked;
         if (player.isEliminated) player.isEliminated = false;
-       }
-     return player;
+      }
+      return player;
     })
 
     this.setState({players, justMoved: false});
@@ -210,9 +210,9 @@ class GameBoard extends Component {
     let maxPoints = numRounds * 5;
     let addRound = 0;
 
-    const players = this.state.players.map( (player) => {
+    const players = this.state.players.map((player) => {
 
-      if ( player.isChecked && !player.isEliminated ) {
+      if (player.isChecked && !player.isEliminated) {
         player.score += howMany;
         // If we have gone below zero, leave it at zero.
         if (player.score < 0) player.score = 0;
@@ -224,19 +224,19 @@ class GameBoard extends Component {
       }
       return player;
     });
-    this.setState({players, rounds: ((addRound !== 0) ? numRounds+addRound : numRounds)});
+    this.setState({players, rounds: ((addRound !== 0) ? numRounds + addRound : numRounds)});
   }
 
   eliminateChecked = () => {
-    const players = this.state.players.map( (player, i) => {
-      if ( player.isChecked ) player.isEliminated += true;
+    const players = this.state.players.map((player, i) => {
+      if (player.isChecked) player.isEliminated += true;
       return player;
     })
     this.setState({players});
   }
 
   uncheckAll = () => {
-    const players = this.state.players.map( (player, i) => {
+    const players = this.state.players.map((player, i) => {
       player.isChecked = false;
       return player;
     })
@@ -246,28 +246,28 @@ class GameBoard extends Component {
   changeLangHandler = (e) => {
     i18n.changeLanguage(e.target.value);
     this.setState({lang: e.target.value});
-  } 
+  }
 
   render() {
     // console.log(this.state);
     const players = this.state.players.map((player) => (
-      <Player
-      key={player.number}
-      number={player.number}
-      name={player.name}
-      score={player.score}
-      // updateScore={this.scoreChange}
-      checkPlayer={this.selectPlayer}
-      isChecked={player.isChecked}
-      isEliminated={player.isEliminated}
-      namePlayer={this.namePlayer}
-      rounds={this.state.rounds}
-      />
+        <Player
+            key={player.number}
+            number={player.number}
+            name={player.name}
+            score={player.score}
+            // updateScore={this.scoreChange}
+            checkPlayer={this.selectPlayer}
+            isChecked={player.isChecked}
+            isEliminated={player.isEliminated}
+            namePlayer={this.namePlayer}
+            rounds={this.state.rounds}
+        />
     ))
 
     const numberMarkers = () => {
       let output = [];
-      for ( let i = 1; i <= this.state.rounds; i++) {
+      for (let i = 1; i <= this.state.rounds; i++) {
         let x = i * 5;
         output.push(<span key={i} className="number-marker">{x}</span>
         )
@@ -276,14 +276,14 @@ class GameBoard extends Component {
     }
 
     return (
-      <div className={'game-board rounds-' + this.state.rounds}>
-        <Row>
-          <Col xs={1}>
-            <div className="title">
-              <h1 className="maestro-title">MAeSTRo</h1>
-            </div>
-          </Col>
-          <Col xs={11}>
+        <div className={'game-board rounds-' + this.state.rounds}>
+          <Row>
+            <Col xs={1}>
+              <div className="title">
+                <h1 className="maestro-title">MAeSTRo</h1>
+              </div>
+            </Col>
+            <Col xs={11}>
               <div>
                 <div className="number-markers">
                   {/* <span className="number-marker">5</span>
@@ -295,18 +295,19 @@ class GameBoard extends Component {
                 </div>
                 {players}
               </div>
-              { !this.state.gameRunning ? 
-                <Setup players={this.state.players} namePlayer={this.namePlayer} addPlayer={this.addPlayer} removePlayer={this.removePlayer} startGame={this.startGame} resetGame={this.resetGame} changeLang={this.changeLangHandler} lang={this.state.lang} />
-              : null }
-            { this.state.helpActive ? 
-              <Help version={VERSION}/>
-              :
-              null
-            }
+              {!this.state.gameRunning ?
+                  <Setup players={this.state.players} namePlayer={this.namePlayer} addPlayer={this.addPlayer} removePlayer={this.removePlayer}
+                         startGame={this.startGame} resetGame={this.resetGame} changeLang={this.changeLangHandler} lang={this.state.lang}/>
+                  : null}
+              {this.state.helpActive ?
+                  <Help version={VERSION}/>
+                  :
+                  null
+              }
 
-          </Col>
-        </Row>
-      </div>
+            </Col>
+          </Row>
+        </div>
     )
   }
 }

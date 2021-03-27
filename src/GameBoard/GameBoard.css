@@ -18,6 +18,7 @@
   margin: 0;
 
 }
+
 .btn-round {
   height: 32px;
   width: 32px;
@@ -26,6 +27,7 @@
   line-height: 32px;
   padding: 0;
 }
+
 h1.maestro-title {
   color: #ffcc00;
   font-family: "Luckiest Guy", Courier;
@@ -36,7 +38,7 @@ h1.maestro-title {
   font-size: 72px;
   text-shadow: black -4px 4px;
   cursor: pointer;
-}  
+}
 
 .control-center {
   font-size: 18px;
@@ -92,6 +94,7 @@ div.title {
 .game-board.rounds-5 .number-marker {
   width: 20%;
 }
+
 .game-board.rounds-6 .number-marker {
   width: 16.666667%;
 }

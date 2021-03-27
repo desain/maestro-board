@@ -5,7 +5,7 @@
   height: 700px;
   width: 40%;
   right: 10%;
-  top:0;
+  top: 0;
   background-color: #000000;
   padding: 20px;
   border-radius: 10px;
@@ -43,6 +43,6 @@ table.key-commands td:first-child {
 
 .version {
   font-size: .75em;
-  float:right;
+  float: right;
   opacity: .5;
 }

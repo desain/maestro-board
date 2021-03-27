@@ -1,5 +1,5 @@
 .player-card {
-  background-image: linear-gradient(#ffffff,#e0e0e0);
+  background-image: linear-gradient(#ffffff, #e0e0e0);
   min-height: 48px;
   height: 48px;
   width: 198px;
@@ -17,7 +17,7 @@
 
 .player-card.selected {
   /* border: 2px solid #ff0000; */
-  background-image: linear-gradient(#ffffcc,#ffcc00);
+  background-image: linear-gradient(#ffffcc, #ffcc00);
 
 }
 
