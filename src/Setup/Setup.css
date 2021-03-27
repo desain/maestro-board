@@ -4,7 +4,6 @@
   left: 5%;
   top: 0;
   width: 40%;
-  height: 700px;
   background-color: #000000;
   padding: 20px;
   border-radius: 10px;
@@ -27,6 +26,7 @@
 
 .setup-buttons {
   margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
 }
 

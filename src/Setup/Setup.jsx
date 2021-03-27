@@ -59,7 +59,6 @@ const Setup = (props) => {
         <LanguagePicker currentLang={props.lang} change={props.changeLang}/>
         <h3>{t("Player Setup")}</h3>
         <div className="player-entry">
-          {playerList}
           <div className="setup-buttons">
             <button
                 className="remove-player-button btn btn-secondary btn-round" title="Remove player"
@@ -80,6 +79,7 @@ const Setup = (props) => {
             </button>
             <button className="start-game-button btn btn-success" title="Start Maestro" onClick={props.startGame}>{t("Start Maestro!")}</button>
           </div>
+          {playerList}
         </div>
       </div>
   )
