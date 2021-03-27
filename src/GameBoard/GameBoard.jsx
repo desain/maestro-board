@@ -8,6 +8,18 @@ import i18n from '../i18n';
 
 const VERSION = '1.3.0'; // Keep in sync with version in package.json
 
+const themes = {
+  default: {
+    title: 'MAeSTRo',
+  },
+  tuff: {
+    title: 'Tuffstro!!!',
+  },
+  nice: {
+    title: 'Nicestro :)',
+  },
+}
+
 export default class GameBoard extends Component {
   // Set up state for gameboard
   constructor(props) {
@@ -59,6 +71,7 @@ export default class GameBoard extends Component {
       rounds: 4,
       justMoved: false,
       theme: 'default',
+      customTheme: {},
     });
   }
 
@@ -227,6 +240,18 @@ export default class GameBoard extends Component {
     this.setState({theme});
   }
 
+  setCustomTheme = (customTheme) => {
+    this.setState({customTheme});
+  }
+
+  getTheme = () => {
+    if (this.state.theme === 'custom') {
+      return this.state.customTheme;
+    } else {
+      return themes[this.state.theme];
+    }
+  }
+
   render() {
     const players = this.state.players.map((player) => (
         <Player
@@ -252,12 +277,14 @@ export default class GameBoard extends Component {
       return output;
     }
 
+    const title = this.getTheme().title;
+
     return (
         <div className={'game-board rounds-' + this.state.rounds}>
           <Row>
             <Col xs={1}>
               <div className="title">
-                <h1 className="maestro-title">MAeSTRo</h1>{/* Change to TUFFSTRO!!! if needed*/}
+                <h1 className="maestro-title">{title}</h1>
               </div>
             </Col>
             <Col xs={11}>
@@ -278,6 +305,8 @@ export default class GameBoard extends Component {
                          setLanguage={this.setLanguage}
                          theme={this.state.theme}
                          setTheme={this.setTheme}
+                         customTheme={this.state.customTheme}
+                         setCustomTheme={this.setCustomTheme}
                   /> : null}
               {this.state.helpActive ? <Help version={VERSION}/> : null}
             </Col>

@@ -8,6 +8,7 @@ import './Setup.css';
 import LanguagePicker from '../LanguagePicker/LanguagePicker'
 import {useTranslation} from 'react-i18next';
 import ThemePicker from "../ThemePicker/ThemePicker";
+import ThemeEditor from "../ThemeEditor/ThemeEditor";
 
 const resetGameDialog = (resetGameFunction, confirmationText) => {
   let answer = window.confirm(confirmationText);
@@ -83,6 +84,9 @@ const Setup = (props) => {
           </div>
           {playerList}
         </div>
+        { props.theme === 'custom'
+            ? <ThemeEditor theme={props.customTheme} setTheme={props.setCustomTheme} />
+            : null }
       </div>
   )
 }
