@@ -39,7 +39,9 @@
   letter-spacing: 3px;
   font-size: 72px;
   text-shadow: black -4px 4px;
-  transform: rotate(-90deg);
+
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
 }
 
 .control-center {
