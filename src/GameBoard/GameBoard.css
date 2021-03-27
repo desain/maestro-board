@@ -2,9 +2,9 @@
   width: 100%;
   height: 100%;
   background-color: #444444;
-  /* background-image: url('/hideout_logo.png');
+  /*background-image: url('/hideout_logo.png');*/
   background-position: 90% 90%;
-  background-repeat: no-repeat; */
+  background-repeat: no-repeat;
   padding: 40px;
   margin: 0;
   overflow: visible;
@@ -16,7 +16,6 @@
 .game-board > .row {
   width: 100%;
   margin: 0;
-
 }
 
 .btn-round {
@@ -30,7 +29,7 @@
 
 h1.maestro-title {
   color: #ffcc00;
-  font-family: "Luckiest Guy", Courier;
+  font-family: "Luckiest Guy", sans-serif;
   letter-spacing: 3px;
 
   transform: rotate(-90deg) translateX(-300px);
@@ -82,11 +81,9 @@ div.title {
   margin-left: 189px;
   margin-right: -15px;
   display: flex;
-
 }
 
 .number-marker {
-  display: flexbox;
   width: 25%;
   text-align: right;
 }

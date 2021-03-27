@@ -32,11 +32,9 @@
   width: 1.5em;
   text-align: center;
   margin: 0 10px 0 6px;
-  display: flexbox;
 }
 
 .player-name {
-  display: flexbox;
   height: 50px;
   margin: auto 0;
   width: 72%;

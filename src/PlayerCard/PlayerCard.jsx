@@ -18,7 +18,7 @@ const playerCard = (props) => {
           {number}
         </div>
         <div className="player-name" title={score}>
-          <ScaleText maxFontSize={24}>
+          <ScaleText maxFontSize={24} minFontSize={10}>
             {name}
           </ScaleText>
         </div>

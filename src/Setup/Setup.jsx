@@ -50,9 +50,9 @@ const Setup = (props) => {
   const confirmationText = t('Are you sure you want to clear all player names and reset all scores to zero?');
   //console.dir(i18n);
   let howManyPlayers = props.players.length;
-  const playerList = props.players.map((player, i) => (
+  const playerList = props.players.map(player => (
       <PlayerEntry key={player.number} name={player.name} number={player.number} namePlayer={props.namePlayer} addPlayer={props.addPlayer}
-                   removePlayer={props.removePlayer} isLast={(player.number === howManyPlayers) ? true : false}/>
+                   removePlayer={props.removePlayer} isLast={(player.number === howManyPlayers)}/>
   ))
   return (
       <div className="setup-panel">

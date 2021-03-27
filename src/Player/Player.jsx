@@ -5,15 +5,12 @@ import './Player.scss';
 import PropTypes from 'prop-types';
 
 class Player extends Component {
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
     // console.log('THIS',this.props,'NEXT',nextProps);
-    if (
-        this.props.name === nextProps.name &&
+    return !(this.props.name === nextProps.name &&
         this.props.isChecked === nextProps.isChecked &&
         this.props.isEliminated === nextProps.isEliminated &&
-        this.props.score === nextProps.score
-    ) return false;
-    else return true;
+        this.props.score === nextProps.score);
   }
 
   render() {

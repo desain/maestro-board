@@ -9,38 +9,16 @@ import i18n from '../i18n';
 const VERSION = '1.2.1';
 
 class GameBoard extends Component {
-
   // Set up state for gameboard
   constructor(props) {
     super(props);
     this.state = this.initialSetup();
-    // const currentLang = i18n.language;
-    // const players = [];
-    // for ( let i = 1; i < 13; i++) {
-    //   players.push({
-    //     name: '',
-    //     number: i,
-    //     score: 0,
-    //     isEliminated: false,
-    //     isChecked: false
-    //   })
-    // }
-    // this.state = {
-    //   players,
-    //   showControls: false,
-    //   gameRunning: false,
-    //   helpActive: true,
-    //   lang: currentLang,
-    //   rounds: 4
-    // };
-
 
     // Get current session info, in case of reload
     if (sessionStorage.length > 0) {
       let persistentState = sessionStorage.getItem('maestroState');
       if (persistentState !== 'null') {
-        let item = JSON.parse(persistentState);
-        this.state = item;
+        this.state = JSON.parse(persistentState);
       }
     }
   }
@@ -134,13 +112,8 @@ class GameBoard extends Component {
         // U key pressed -- uncheck everyone
         this.uncheckAll();
         break;
-      case 'f':
-        // U key pressed -- uncheck everyone
-        // alert(this.getLowestScore());
-        break;
       default:
         break;
-
     }
   }
 
@@ -181,7 +154,7 @@ class GameBoard extends Component {
 
   namePlayer = (e, playerNum) => {
     const newName = e.target.value;
-    const players = this.state.players.map((player, i) => {
+    const players = this.state.players.map(player => {
       if (playerNum === player.number) player.name = newName;
       return player;
     })
@@ -194,7 +167,7 @@ class GameBoard extends Component {
     if (this.state.justMoved) {
       this.uncheckAll();
     }
-    const players = this.state.players.map((player, i) => {
+    const players = this.state.players.map(player => {
       if (playerNum === player.number) {
         player.isChecked = !player.isChecked;
         if (player.isEliminated) player.isEliminated = false;
@@ -211,7 +184,6 @@ class GameBoard extends Component {
     let addRound = 0;
 
     const players = this.state.players.map((player) => {
-
       if (player.isChecked && !player.isEliminated) {
         player.score += howMany;
         // If we have gone below zero, leave it at zero.
@@ -228,7 +200,7 @@ class GameBoard extends Component {
   }
 
   eliminateChecked = () => {
-    const players = this.state.players.map((player, i) => {
+    const players = this.state.players.map(player => {
       if (player.isChecked) {
         player.isEliminated = true;
         player.score = 0;
@@ -239,7 +211,7 @@ class GameBoard extends Component {
   }
 
   uncheckAll = () => {
-    const players = this.state.players.map((player, i) => {
+    const players = this.state.players.map(player => {
       player.isChecked = false;
       return player;
     })
@@ -252,14 +224,12 @@ class GameBoard extends Component {
   }
 
   render() {
-    // console.log(this.state);
     const players = this.state.players.map((player) => (
         <Player
             key={player.number}
             number={player.number}
             name={player.name}
             score={player.score}
-            // updateScore={this.scoreChange}
             checkPlayer={this.selectPlayer}
             isChecked={player.isChecked}
             isEliminated={player.isEliminated}
@@ -283,17 +253,12 @@ class GameBoard extends Component {
           <Row>
             <Col xs={1}>
               <div className="title">
-                <h1 className="maestro-title">MAeSTRo</h1>
+                <h1 className="maestro-title">MAeSTRo</h1>{/* Change to TUFFSTRO!!! if needed*/}
               </div>
             </Col>
             <Col xs={11}>
               <div>
                 <div className="number-markers">
-                  {/* <span className="number-marker">5</span>
-                  <span className="number-marker">10</span>
-                  <span className="number-marker">15</span>
-                  <span className="number-marker">20</span>
-                  <span className="number-marker">25</span> */}
                   {numberMarkers()}
                 </div>
                 {players}
@@ -304,10 +269,7 @@ class GameBoard extends Component {
                   : null}
               {this.state.helpActive ?
                   <Help version={VERSION}/>
-                  :
-                  null
-              }
-
+                  : null}
             </Col>
           </Row>
         </div>
