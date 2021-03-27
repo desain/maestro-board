@@ -5,20 +5,9 @@ import './GameBoard.css';
 import Setup from '../Setup/Setup';
 import Help from '../Help/Help';
 import i18n from '../i18n';
+import {BUILTIN_THEMES, CUSTOM_THEME_NAME} from '../Constants';
 
 const VERSION = '1.3.0'; // Keep in sync with version in package.json
-
-const themes = {
-  default: {
-    title: 'MAeSTRo',
-  },
-  tuff: {
-    title: 'Tuffstro!!!',
-  },
-  nice: {
-    title: 'Nicestro :)',
-  },
-}
 
 export default class GameBoard extends Component {
   // Set up state for gameboard
@@ -71,7 +60,11 @@ export default class GameBoard extends Component {
       rounds: 4,
       justMoved: false,
       theme: 'default',
-      customTheme: {},
+      customTheme: {
+        name: 'Custom',
+        title: 'Mystro',
+        css: ''
+      },
     });
   }
 
@@ -245,10 +238,10 @@ export default class GameBoard extends Component {
   }
 
   getTheme = () => {
-    if (this.state.theme === 'custom') {
+    if (this.state.theme === CUSTOM_THEME_NAME) {
       return this.state.customTheme;
     } else {
-      return themes[this.state.theme];
+      return BUILTIN_THEMES[this.state.theme];
     }
   }
 
@@ -281,6 +274,9 @@ export default class GameBoard extends Component {
 
     return (
         <Row className={'game-board rounds-' + this.state.rounds}>
+          <style>
+            {this.getTheme().css}
+          </style>
           <Col xs={1} className="title-container">
             <h1 className="maestro-title">{title}</h1>
           </Col>

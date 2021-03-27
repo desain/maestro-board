@@ -1,14 +1,14 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
+import {BUILTIN_THEMES, CUSTOM_THEME_NAME} from "../Constants";
 
 export default props => {
   const {t} = useTranslation();
   return (
       <select className="float-right form-control-sm" value={props.theme} onChange={e => props.setTheme(e.target.value)}>
-        <option value="default">{t('Default Theme')}</option>
-        <option value="tuff">{t('Tuffstro Theme')}</option>
-        <option value="nice">{t('Nicestro Theme')}</option>
-        <option value="custom">{t('Custom Theme')}</option>
+        {Object.keys(BUILTIN_THEMES).map(theme =>
+            <option value={theme}>{BUILTIN_THEMES[theme].name}</option>)}
+        <option value={CUSTOM_THEME_NAME}>{t('Custom Theme')}</option>
       </select>
   );
 };
