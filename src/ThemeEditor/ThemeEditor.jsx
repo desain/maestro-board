@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 
-export default props => {
+const ThemeEditor = props => {
   const {t} = useTranslation();
   const {theme, setTheme} = props;
   return (
@@ -25,3 +25,4 @@ export default props => {
       </form>
   );
 };
+export default ThemeEditor;
