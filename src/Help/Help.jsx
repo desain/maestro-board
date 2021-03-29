@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowLeft, faArrowRight, faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
 import {useTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
+import {Button} from "react-bootstrap";
 
 
 const Help = (props) => {
@@ -58,6 +59,7 @@ const Help = (props) => {
           </tbody>
         </table>
         <div className="version">{t("Version")} {props.version}</div>
+        <Button title="Close" onClick={props.closeHelp}>{t("Close")}</Button>
       </div>
   )
 }

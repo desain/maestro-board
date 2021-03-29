@@ -1,7 +1,6 @@
 .game-board {
   width: 100%;
   height: 100%;
-  background-color: #444444;
   /*background-image: url('/hideout_logo.png');*/
   background-position: 90% 90%;
   background-repeat: no-repeat;
@@ -13,20 +12,6 @@
   color: #e0e0e0;
   --maestro-primary-color: #ffcc00;
   --maestro-minor-color: #cccccc;
-}
-
-.game-board > .row {
-  width: 100%;
-  margin: 0;
-}
-
-.btn-round {
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 32px;
-  padding: 0;
 }
 
 .title-container {
@@ -44,17 +29,6 @@
 
   writing-mode: vertical-lr;
   transform: rotate(180deg);
-}
-
-.add-player-button {
-  border-radius: 50%;
-  height: 32px;
-  width: 32px;
-}
-
-.add-remove-button {
-  margin-left: 2px;
-  margin-right: 2px;
 }
 
 .number-markers {

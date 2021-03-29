@@ -10,35 +10,11 @@
   border: 3px solid #999999;
 }
 
-.setup-window p {
+.btn-round {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
   text-align: center;
-  font-size: .8em;
-}
-
-.player-entry-field {
-  margin-bottom: 4px;
-}
-
-.player-entry-field-number {
-  width: 24px;
-  text-align: right;
-}
-
-.setup-buttons {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: flex;
-}
-
-.add-player-button {
-  margin-left: 4px;
-}
-
-.reset-game-button {
-  margin-left: 10px;
-}
-
-.start-game-button {
-  margin-right: 0;
-  margin-left: auto;
+  line-height: 32px;
+  padding: 0;
 }

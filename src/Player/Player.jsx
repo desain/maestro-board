@@ -1,47 +1,43 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Col, Row} from 'react-bootstrap';
-import PlayerCard from '../PlayerCard/PlayerCard';
 import './Player.scss';
 import PropTypes from 'prop-types';
+import ScaleText from "react-scale-text";
 
-class Player extends Component {
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    // console.log('THIS',this.props,'NEXT',nextProps);
-    return !(this.props.name === nextProps.name &&
-        this.props.isChecked === nextProps.isChecked &&
-        this.props.isEliminated === nextProps.isEliminated &&
-        this.props.score === nextProps.score);
+const Player = props => {
+  const {rounds, index, player: {isEliminated, isSelected, name, score}, selectPlayer} = props;
+  let cardCSS = 'player-card';
+  if (isEliminated) cardCSS = 'player-card eliminated';
+  else if (isSelected) cardCSS = 'player-card selected';
+  let totalPoints = rounds * 5;
+  const style = {
+    marginLeft: 'calc((100%/' + totalPoints + '*' + score + ') - 200px)'
   }
-
-  render() {
-    return (
-        <Row>
-          <Col xs={12} className="player-track">
-            <div className="board-bg">
-              <PlayerCard isEliminated={this.props.isEliminated}
-                          name={this.props.name}
-                          number={this.props.number}
-                          score={this.props.score}
-                          isSelected={this.props.isChecked}
-                          namePlayer={this.props.namePlayer}
-                          checkPlayer={this.props.checkPlayer}
-                          rounds={this.props.rounds}/>
+  return (
+      <Row>
+        <Col xs={12} className="player-track">
+          <div className="board-bg">
+            <div className={cardCSS} style={style} onClick={() => selectPlayer(index)}>
+              <div className="player-number">
+                {index + 1}
+              </div>
+              <div className="player-name" title={score}>
+                <ScaleText maxFontSize={24} minFontSize={10}>
+                  {name}
+                </ScaleText>
+              </div>
             </div>
-          </Col>
-        </Row>
-    )
-  }
+          </div>
+        </Col>
+      </Row>
+  );
 }
 
 Player.propTypes = {
-  isEliminated: PropTypes.bool,
-  isChecked: PropTypes.bool,
-  name: PropTypes.string,
-  number: PropTypes.number,
-  rounds: PropTypes.number,
-  score: PropTypes.number,
-  namePlayer: PropTypes.func,
-  checkPlayer: PropTypes.func
+  player: PropTypes.object,
+  index: PropTypes.number,
+  selectPlayer: PropTypes.func,
+  rounds: PropTypes.number
 }
 
 export default Player;

@@ -18,6 +18,7 @@ const ThemeEditor = props => {
         <label htmlFor="customCss">{t('Custom CSS')}</label>
         <textarea
             name="customCss"
+            className="w-100"
             placeholder={t('Put any custom CSS for your theme here!')}
             value={theme.css}
             onChange={e => setTheme({...theme, css: e.target.value})}

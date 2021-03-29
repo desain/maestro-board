@@ -5,7 +5,8 @@ import './GameBoard.css';
 import Setup from '../Setup/Setup';
 import Help from '../Help/Help';
 import i18n from '../i18n';
-import {BUILTIN_THEMES, CUSTOM_THEME_NAME} from '../Constants';
+import {BUILTIN_THEMES, CUSTOM_THEME_NAME, SESSION_STORAGE_KEY} from '../Constants';
+import {v4 as uuidv4} from "uuid";
 
 const VERSION = '1.3.0'; // Keep in sync with version in package.json
 
@@ -17,16 +18,16 @@ export default class GameBoard extends Component {
 
     // Get current session info, in case of reload
     if (sessionStorage.length > 0) {
-      let persistentState = sessionStorage.getItem('maestroState');
+      let persistentState = sessionStorage.getItem(SESSION_STORAGE_KEY);
       if (persistentState !== 'null') {
-        this.state = JSON.parse(persistentState);
+        this.state = {...this.state, ...JSON.parse(persistentState)};
       }
     }
   }
 
   static getDerivedStateFromProps = (props, state) => {
     let persistentState = JSON.stringify(state);
-    sessionStorage.setItem('maestroState', persistentState)
+    sessionStorage.setItem(SESSION_STORAGE_KEY, persistentState)
     return state;
   }
 
@@ -43,13 +44,7 @@ export default class GameBoard extends Component {
     const currentLang = i18n.language;
     const players = [];
     for (let i = 1; i < 13; i++) {
-      players.push({
-        name: '',
-        number: i,
-        score: 0,
-        isEliminated: false,
-        isChecked: false
-      })
+      players.push(this.createPlayer());
     }
     return ({
       players,
@@ -80,13 +75,13 @@ export default class GameBoard extends Component {
       case "+":
         // RIGHT arrow key -- add one point to checked players
         this.setState({justMoved: true})
-        this.addToChecked(1);
+        this.givePointsToSelectedPlayers(1);
         break;
       case "ArrowLeft":
       case "-":
         // LEFT arrow key -- subtract one point from checked players
         this.setState({justMoved: true})
-        this.addToChecked(-1);
+        this.givePointsToSelectedPlayers(-1);
         break;
       case "ArrowUp":
         // UP arrow key - add rounds to the board
@@ -102,12 +97,12 @@ export default class GameBoard extends Component {
       case "4":
       case "5":
         // Number key pressed -- add proper number of points and then uncheck everyone
-        this.addToChecked(parseInt(key, 10));
+        this.givePointsToSelectedPlayers(parseInt(key, 10));
         this.uncheckAll();
         break;
       case 'e':
         // E key pressed -- eliminate selected players. Also, nice.
-        this.eliminateChecked();
+        this.eliminateSelectedPlayers();
         this.uncheckAll();
         break;
       case 's':
@@ -124,11 +119,6 @@ export default class GameBoard extends Component {
     }
   }
 
-  // Return the lowest score on the board
-  getLowestScore = () => {
-    return [...this.state.players].sort((a, b) => (a.score > b.score) ? 1 : -1)[0].score;
-  }
-
   startGame = () => {
     this.setState({gameRunning: true, helpActive: false});
   }
@@ -137,90 +127,90 @@ export default class GameBoard extends Component {
     this.setState(this.initialSetup());
   }
 
+  createPlayer = () => ({
+    key: uuidv4(),
+    name: '',
+    score: 0,
+    isEliminated: false,
+    isSelected: false
+  })
+
   addPlayer = () => {
-    let newPlayerArray = [].concat(this.state.players);
-    const nextPlayer = this.state.players.length + 1;
-    const newPlayer = {
-      name: '',
-      number: nextPlayer,
-      score: 0,
-      isEliminated: false,
-      isChecked: false
-    }
-    newPlayerArray.push(newPlayer);
-    this.setState({players: newPlayerArray});
+    let players = [].concat(this.state.players);
+    players.push(this.createPlayer());
+    this.setState({players});
   }
 
-  removePlayer = () => {
+  removePlayer = (playerIndex = this.state.players.length - 1) => {
     if (this.state.players.length > 1) {
       let newPlayerArray = [].concat(this.state.players);
-      newPlayerArray.splice(-1, 1);
+      newPlayerArray.splice(playerIndex, 1);
       this.setState({players: newPlayerArray})
     }
   }
 
-  namePlayer = (e, playerNum) => {
-    const newName = e.target.value;
-    const players = this.state.players.map(player => {
-      if (playerNum === player.number) player.name = newName;
-      return player;
-    })
+  swapPlayers = (index1, index2) => {
+    if (index1 < 0 || index2 < 0 || index1 > this.state.players.length || index2 > this.state.players.length) {
+      throw new Error(`Cannot swap players: index ${index1} or ${index2} out of range`);
+    }
+    const players = [].concat(this.state.players);
+    const temp = players[index1];
+    players[index1] = players[index2];
+    players[index2] = temp;
     this.setState({players});
-
   }
 
-  selectPlayer = (e, playerNum) => {
+  namePlayer = (playerIndex, name) => {
+    const players = [].concat(this.state.players);
+    players[playerIndex] = {...players[playerIndex], name};
+    this.setState({players});
+  }
+
+  selectPlayer = (playerIndex) => {
     // First, did we just move another bunch of players? If so, uncheck all
     if (this.state.justMoved) {
       this.uncheckAll();
     }
-    const players = this.state.players.map(player => {
-      if (playerNum === player.number) {
-        player.isChecked = !player.isChecked;
-        if (player.isEliminated) player.isEliminated = false;
-      }
-      return player;
-    })
+    const players = [].concat(this.state.players);
+    players[playerIndex] = {
+      ...players[playerIndex],
+      isEliminated: false,
+      isSelected: !players[playerIndex].isSelected,
+    };
 
     this.setState({players, justMoved: false});
   }
 
-  addToChecked = (howMany) => {
+  givePointsToSelectedPlayers = (numPoints) => {
     let numRounds = this.state.rounds;
     let maxPoints = numRounds * 5;
-    let addRound = 0;
+    let addRound = false;
 
     const players = this.state.players.map((player) => {
-      if (player.isChecked && !player.isEliminated) {
-        player.score += howMany;
+      if (player.isSelected && !player.isEliminated) {
+        player.score += numPoints;
         // If we have gone below zero, leave it at zero.
         if (player.score < 0) player.score = 0;
         // If this player's score has exceeded the maximum points for the number of rounds on the board, add a round.
         if (player.score > maxPoints) {
-          addRound = 1;
+          addRound = true;
         }
       }
       return player;
     });
-    this.setState({players, rounds: ((addRound !== 0) ? numRounds + addRound : numRounds)});
+    this.setState({players, rounds: (addRound ? numRounds + 1 : numRounds)});
   }
 
-  eliminateChecked = () => {
-    const players = this.state.players.map(player => {
-      if (player.isChecked) {
-        player.isEliminated = true;
-        player.score = 0;
-      }
-      return player;
-    })
+  eliminateSelectedPlayers = () => {
+    const players = this.state.players.map(player =>
+        player.isSelected
+          ? {...player, score: 0, isEliminated: true}
+          : player);
     this.setState({players});
   }
 
   uncheckAll = () => {
-    const players = this.state.players.map(player => {
-      player.isChecked = false;
-      return player;
-    })
+    const players = this.state.players.map(player => ({...player, isSelected: false}));
     this.setState({players});
   }
 
@@ -246,16 +236,12 @@ export default class GameBoard extends Component {
   }
 
   render() {
-    const players = this.state.players.map((player) => (
+    const players = this.state.players.map((player, playerIndex) => (
         <Player
-            key={player.number}
-            number={player.number}
-            name={player.name}
-            score={player.score}
-            checkPlayer={this.selectPlayer}
-            isChecked={player.isChecked}
-            isEliminated={player.isEliminated}
-            namePlayer={this.namePlayer}
+            key={player.key}
+            player={player}
+            index={playerIndex}
+            selectPlayer={this.selectPlayer}
             rounds={this.state.rounds}
         />
     ))
@@ -292,6 +278,7 @@ export default class GameBoard extends Component {
                        namePlayer={this.namePlayer}
                        addPlayer={this.addPlayer}
                        removePlayer={this.removePlayer}
+                       swapPlayers={this.swapPlayers}
                        startGame={this.startGame}
                        resetGame={this.resetGame}
                        language={this.state.language}
@@ -301,7 +288,9 @@ export default class GameBoard extends Component {
                        customTheme={this.state.customTheme}
                        setCustomTheme={this.setCustomTheme}
                 /> : null}
-            {this.state.helpActive ? <Help version={VERSION}/> : null}
+            {this.state.helpActive
+                ? <Help version={VERSION} closeHelp={() => this.setState({helpActive: false})}/>
+                : null}
           </Col>
         </Row>
     )

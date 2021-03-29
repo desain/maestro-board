@@ -7,7 +7,7 @@ const ThemePicker = props => {
   return (
       <select className="float-right form-control-sm" value={props.theme} onChange={e => props.setTheme(e.target.value)}>
         {Object.keys(BUILTIN_THEMES).map(theme =>
-            <option value={theme}>{BUILTIN_THEMES[theme].name}</option>)}
+            <option key={theme} value={theme}>{BUILTIN_THEMES[theme].name}</option>)}
         <option value={CUSTOM_THEME_NAME}>{t('Custom Theme')}</option>
       </select>
   );

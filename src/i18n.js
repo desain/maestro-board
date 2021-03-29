@@ -26,7 +26,15 @@ i18n
             "Start Maestro!": "Start Maestro!",
             "Are you sure you want to clear all player names and reset all scores to zero?": "Are you sure you want to clear all player names and reset all scores to zero?",
             "Version": "Version",
-            "Key Commands": "Key Commands"
+            "Key Commands": "Key Commands",
+            "Delete": "Delete",
+            "Custom Theme": "Custom Theme",
+            "Move Up": "Move Up",
+            "Move Down": "Move Down",
+            "Close": "Close",
+            "Enter Maestro title": "Enter Maestro title",
+            "Custom CSS": "Custom CSS",
+            "Title": "Title",
           }
         },
         de: {
@@ -47,8 +55,7 @@ i18n
             "Start Maestro!": "Maestro beginnen!",
             "Are you sure you want to clear all player names and reset all scores to zero?": "Möchten Sie wirklich alle Spielernamen löschen und alle Punkte auf Null zurücksetzen?",
             "Version": "Versionsnummer",
-            "Key Commands": "Tastenbefehle"
-
+            "Key Commands": "Tastenbefehle",
           }
         },
         es: {
@@ -69,7 +76,7 @@ i18n
             "Start Maestro!": "¡Inicie Maestro! ",
             "Are you sure you want to clear all player names and reset all scores to zero?": "¿Estás seguro que deseas borrar todos los nombres de jugadores y restablecer todos los puntajes a cero?",
             "Version": "Versión",
-            "Key Commands": "Comandos de teclado"
+            "Key Commands": "Comandos de teclado",
           }
         }
       },

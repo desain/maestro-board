@@ -2,45 +2,63 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
-import {Col, Row} from 'react-bootstrap';
+import {faArrowDown, faArrowUp, faMinus, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {Button, Col, Dropdown, Row} from 'react-bootstrap';
 import './Setup.css';
 import LanguagePicker from '../LanguagePicker/LanguagePicker'
 import {useTranslation} from 'react-i18next';
 import ThemePicker from "../ThemePicker/ThemePicker";
 import ThemeEditor from "../ThemeEditor/ThemeEditor";
+import {CUSTOM_THEME_NAME} from "../Constants";
+import DropdownItem from "react-bootstrap/DropdownItem";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
 
 const resetGameDialog = (resetGameFunction, confirmationText) => {
-  let answer = window.confirm(confirmationText);
-  if (answer) resetGameFunction();
+  if (window.confirm(confirmationText)) {
+    resetGameFunction();
+  }
 }
 
 const PlayerEntry = (props) => {
   const {t} = useTranslation();
-
-  let playerID = "player-" + props.number;
+  const playerNumber = props.index + 1;
   return (
-      <Row className="player-entry-field">
-        <Col xs={1}>
-          <label htmlFor={playerID} className="player-entry-field-number">{props.number}</label>
+      <Row className="mb-2">
+        <Col xs={2} className="pr-0">
+          <Dropdown>
+            <DropdownToggle title={playerNumber} variant="link" className="btn-block text-light">
+              {playerNumber}
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem onClick={() => props.removePlayer(props.index)}>
+                <FontAwesomeIcon icon={faTrash} className="mr-2"/>
+                {t('Delete')}
+              </DropdownItem>
+              <DropdownItem onClick={() => props.swapPlayers(props.index, props.index - 1)} disabled={props.index === 0}>
+                <FontAwesomeIcon icon={faArrowUp} className="mr-2"/>
+                {t('Move Up')}
+              </DropdownItem>
+              <DropdownItem onClick={() => props.swapPlayers(props.index, props.index + 1)} disabled={props.isLast}>
+                <FontAwesomeIcon icon={faArrowDown} className="mr-2"/>
+                {t('Move Down')}
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </Col>
-        <Col xs={11}>
+        <Col xs={10}>
           <input
-              id={playerID}
+              autoFocus
               className="form-control"
               type="text"
               value={props.name}
               placeholder={t("Type player name here")}
-              onChange={(e) => props.namePlayer(e, props.number)}
+              onChange={(e) => props.namePlayer(props.index, e.target.value)}
               onKeyPress={event => {
-                if (props.isLast) {
-                  if (event.key === 'Enter') {
-                    props.addPlayer()
-                  }
-
+                if (props.isLast && event.key === 'Enter') {
+                  props.addPlayer()
                 }
               }}
-              autoFocus
           />
         </Col>
       </Row>
@@ -50,11 +68,16 @@ const PlayerEntry = (props) => {
 const Setup = (props) => {
   const {t} = useTranslation();
   const confirmationText = t('Are you sure you want to clear all player names and reset all scores to zero?');
-  //console.dir(i18n);
-  let howManyPlayers = props.players.length;
-  const playerList = props.players.map(player => (
-      <PlayerEntry key={player.number} name={player.name} number={player.number} namePlayer={props.namePlayer} addPlayer={props.addPlayer}
-                   removePlayer={props.removePlayer} isLast={(player.number === howManyPlayers)}/>
+  const playerList = props.players.map((player, playerIndex) => (
+      <PlayerEntry
+          key={player.key}
+          name={player.name}
+          index={playerIndex}
+          namePlayer={props.namePlayer}
+          removePlayer={props.removePlayer}
+          addPlayer={props.addPlayer}
+          swapPlayers={props.swapPlayers}
+          isLast={playerIndex === props.players.length-1}/>
   ))
   return (
       <div className="setup-panel">
@@ -62,29 +85,25 @@ const Setup = (props) => {
         <ThemePicker theme={props.theme} setTheme={props.setTheme} />
         <h3>{t("Player Setup")}</h3>
         <div className="player-entry">
-          <div className="setup-buttons">
-            <button
-                className="remove-player-button btn btn-secondary btn-round" title="Remove player"
-                onClick={props.removePlayer}
-            >
+          <div className="d-flex mb-2">
+            <Button variant="secondary" className="btn-round mr-1" title="Remove player"
+                    disabled={props.players.length === 1}
+                    onClick={() => props.removePlayer()}>
               <FontAwesomeIcon icon={faMinus}/>
-            </button>
-            <button
-                className="add-player-button btn btn-secondary btn-round" title="Add player"
-                onClick={props.addPlayer}
-            >
+            </Button>
+            <Button variant="secondary" className="btn-round mr-3" title="Add player" onClick={props.addPlayer}>
               <FontAwesomeIcon icon={faPlus}/>
-            </button>
-            <button className="reset-game-button btn btn-danger" title="Reset Game"
-                    onClick={() => resetGameDialog(props.resetGame, confirmationText)}
-            >
+            </Button>
+            <Button variant="danger" title="Reset Game" onClick={() => resetGameDialog(props.resetGame, confirmationText)}>
               {t("Reset")}
-            </button>
-            <button className="start-game-button btn btn-success" title="Start Maestro" onClick={props.startGame}>{t("Start Maestro!")}</button>
+            </Button>
+            <Button variant="success" title="Start Maestro" onClick={props.startGame} className="ml-auto">{
+              t("Start Maestro!")}
+            </Button>
           </div>
           {playerList}
         </div>
-        { props.theme === 'custom'
+        { props.theme === CUSTOM_THEME_NAME
             ? <ThemeEditor theme={props.customTheme} setTheme={props.setCustomTheme} />
             : null }
       </div>
