@@ -18,3 +18,8 @@
   line-height: 32px;
   padding: 0;
 }
+
+.setup-player-menu-title {
+  display: inline-block;
+  min-width: 1.5em;
+}

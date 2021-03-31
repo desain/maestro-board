@@ -204,8 +204,8 @@ export default class GameBoard extends Component {
   eliminateSelectedPlayers = () => {
     const players = this.state.players.map(player =>
         player.isSelected
-          ? {...player, score: 0, isEliminated: true}
-          : player);
+            ? {...player, score: 0, isEliminated: true}
+            : player);
     this.setState({players});
   }
 
@@ -235,64 +235,48 @@ export default class GameBoard extends Component {
     }
   }
 
-  render() {
-    const players = this.state.players.map((player, playerIndex) => (
-        <Player
-            key={player.key}
-            player={player}
-            index={playerIndex}
-            selectPlayer={this.selectPlayer}
-            rounds={this.state.rounds}
-        />
-    ))
-
-    const numberMarkers = () => {
-      let output = [];
-      for (let i = 1; i <= this.state.rounds; i++) {
-        let x = i * 5;
-        output.push(<span key={i} className="number-marker">{x}</span>
-        )
-      }
-      return output;
-    }
-
-    const title = this.getTheme().title;
-
-    return (
-        <Row className={'game-board rounds-' + this.state.rounds}>
-          <style>
-            {this.getTheme().css}
-          </style>
-          <Col xs={1} className="title-container">
-            <h1 className="maestro-title">{title}</h1>
-          </Col>
-          <Col xs={11}>
-            <div>
-              <div className="number-markers">
-                {numberMarkers()}
-              </div>
-              {players}
+  render = () => (
+      <Row className={`game-board rounds-${this.state.rounds}`}>
+        <style>
+          {this.getTheme().css}
+        </style>
+        <Col xs={1} className="title-container">
+          <h1 className="maestro-title">{this.getTheme().title}</h1>
+        </Col>
+        <Col xs={11}>
+          <div>
+            <div className="number-markers">
+              {Array(this.state.rounds).fill().map((_, i) =>
+                  <span key={i} className="number-marker">{5 * (i + 1)}</span>)}
             </div>
-            {!this.state.gameRunning ?
-                <Setup players={this.state.players}
-                       namePlayer={this.namePlayer}
-                       addPlayer={this.addPlayer}
-                       removePlayer={this.removePlayer}
-                       swapPlayers={this.swapPlayers}
-                       startGame={this.startGame}
-                       resetGame={this.resetGame}
-                       language={this.state.language}
-                       setLanguage={this.setLanguage}
-                       theme={this.state.theme}
-                       setTheme={this.setTheme}
-                       customTheme={this.state.customTheme}
-                       setCustomTheme={this.setCustomTheme}
-                /> : null}
-            {this.state.helpActive
-                ? <Help version={VERSION} closeHelp={() => this.setState({helpActive: false})}/>
-                : null}
-          </Col>
-        </Row>
-    )
-  }
+            {this.state.players.map((player, playerIndex) => <Player
+                key={player.key}
+                player={player}
+                index={playerIndex}
+                selectPlayer={this.selectPlayer}
+                rounds={this.state.rounds}
+            />)}
+          </div>
+          {!this.state.gameRunning && <Setup
+              players={this.state.players}
+              namePlayer={this.namePlayer}
+              addPlayer={this.addPlayer}
+              removePlayer={this.removePlayer}
+              swapPlayers={this.swapPlayers}
+              startGame={this.startGame}
+              resetGame={this.resetGame}
+              language={this.state.language}
+              setLanguage={this.setLanguage}
+              theme={this.state.theme}
+              setTheme={this.setTheme}
+              customTheme={this.state.customTheme}
+              setCustomTheme={this.setCustomTheme}
+          />}
+          {this.state.helpActive && <Help
+              version={VERSION}
+              closeHelp={() => this.setState({helpActive: false})}
+          />}
+        </Col>
+      </Row>
+  )
 }
