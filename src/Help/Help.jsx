@@ -1,13 +1,13 @@
 import React from 'react';
 import './Help.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faArrowLeft, faArrowRight, faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
+import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
 import {useTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {Button} from "react-bootstrap";
 
 
-const Help = (props) => {
+const Help = ({version, closeHelp}) => {
   const {t} = useTranslation();
 
   return (
@@ -32,14 +32,14 @@ const Help = (props) => {
                 icon={faMinus}/></span></td>
             <td>{t("Remove one point from selected players")}</td>
           </tr>
-          {/* <tr>
-						<td><span className="help-key"><FontAwesomeIcon icon={faArrowUp}/></span></td>
-						<td>{t("Add one round to board")}</td>
-					</tr>
-					<tr>
-						<td><span className="help-key"><FontAwesomeIcon icon={faArrowDown}/></span></td>
-						<td>{t("Remove one round from board")}</td>
-					</tr> */}
+          <tr>
+            <td><span className="help-key"><FontAwesomeIcon icon={faArrowUp}/></span></td>
+            <td>{t("Add one round to board")}</td>
+          </tr>
+          <tr>
+            <td><span className="help-key"><FontAwesomeIcon icon={faArrowDown}/></span></td>
+            <td>{t("Remove one round from board")}</td>
+          </tr>
           <tr>
             <td><span className="help-key">U</span></td>
             <td>{t("Unselect all players")}</td>
@@ -58,15 +58,15 @@ const Help = (props) => {
           </tr>
           </tbody>
         </table>
-        <div className="version">{t("Version")} {props.version}</div>
-        <Button title="Close" onClick={props.closeHelp}>{t("Close")}</Button>
+        <div className="float-right text-muted small">{t("Version")} {version}</div>
+        <Button title="Close" onClick={closeHelp}>{t("Close")}</Button>
       </div>
   )
 }
 
 Help.propTypes = {
-  version: PropTypes.string
+  version: PropTypes.string,
+  closeHelp: PropTypes.func,
 }
-
 
 export default Help;

@@ -2,7 +2,6 @@
   font-size: .7em;
   font-weight: 300;
   position: absolute;
-  height: 700px;
   width: 40%;
   right: 10%;
   top: 0;
@@ -39,10 +38,4 @@ table.key-commands td:first-child {
 
 .help-key .svg-inline--fa.fa-w-14 {
   width: .7em;
-}
-
-.version {
-  font-size: .75em;
-  float: right;
-  opacity: .5;
 }
